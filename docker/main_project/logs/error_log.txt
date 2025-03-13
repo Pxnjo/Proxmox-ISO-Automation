@@ -1,0 +1,1 @@
+2025-03-13 13:21:05,186 - ERROR - WARNING: apt does not have a stable CLI interface. Use with caution in scripts.

@@ -1,0 +1,7 @@
+ttkbootstrap
+threading
+paramiko
+requests
+urllib3
+tkinter
+PIL

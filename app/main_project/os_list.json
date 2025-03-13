@@ -1,0 +1,38 @@
+[
+    {
+        "update_command": "apt update -y",
+        "distro": [
+            "ubuntu",
+            "debian",
+            "linux mint",
+            "pop!_os",
+            "kali linux",
+            "raspbian",
+            "elementary os",
+            "zorin os",
+            "bodhi linux",
+            "mx linux"
+        ]
+    },
+    {
+        "update_command": "dnf update -y",
+        "distro": [
+            "red hat enterprise linux (rhel)",
+            "centos",
+            "almalinux",
+            "oracle linux",
+            "fedora",
+            "rocky linux",
+            "scientific linux",
+            "amazon linux 2"
+        ]
+        
+    },
+    {
+        "update_command": "sudo pacman -Syu --noconfirm",
+        "distro": [
+            "arch linux"
+        ]
+        
+    }
+]

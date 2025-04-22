@@ -60,6 +60,7 @@ def clone_vm(templateId):
     else:
         print(f"VM clone failed: {describe_errors(response)}")
         return
+
 def check_if_cloned(vmid):
     url = f"{base_url}/qemu/{vmid}/status/current"
     attempt = 0

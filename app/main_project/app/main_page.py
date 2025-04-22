@@ -15,19 +15,25 @@ im = Image.open(icon_path)
 def create_log_box(master):
     # Crea un frame per contenere il Text e la Scrollbar
     frame = ttk.Frame(master)
-    frame.pack(fill=BOTH, expand=YES, pady=10, padx=10)
-
-    # Crea un widget Text per visualizzare i log
-    log_text = tkinter.Text(frame, height=10, wrap="word")
-    log_text.pack(side=LEFT, fill=BOTH, expand=YES)
-
-    # Crea una scrollbar verticale
+    frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
+    
+    # Configura il frame per espandersi
+    master.columnconfigure(0, weight=1)
+    master.rowconfigure(0, weight=1)
+    frame.columnconfigure(0, weight=1)
+    frame.rowconfigure(0, weight=1)
+    
+    # Crea un widget Text
+    log_text = tkinter.Text(frame, wrap="word")
+    log_text.grid(row=0, column=0, sticky="nsew")
+    
+    # Crea scrollbar
     scrollbar = ttk.Scrollbar(frame, orient=VERTICAL, bootstyle="round", command=log_text.yview)
-    scrollbar.pack(side=RIGHT, fill=Y)
-
-    # Collega lo scrollbar al widget Text
+    scrollbar.grid(row=0, column=1, sticky="ns")
+    
+    # Collega scrollbar al Text
     log_text.config(yscrollcommand=scrollbar.set)
-
+    
     return log_text
 
 class RedirectText(object):
@@ -67,15 +73,36 @@ def del_btn(master):
 def exe_app():
     app = ttk.Window("ISO Tester", "darkly")
     app.iconbitmap(icon_path)
-
-    # Crea il log box e reindirizza l'output
+    app.geometry("800x600")
+    
+    # Configura la griglia principale
+    app.columnconfigure(0, weight=1)
+    app.rowconfigure(0, weight=1)
+    app.rowconfigure(1, weight=0)  # Riga per il pulsante, non deve espandersi
+    
+    # Area log
     log_box = create_log_box(app)
     sys.stdout = RedirectText(log_box)
     sys.stderr = RedirectText(log_box)
-
-    # Avvia script.main() in un thread separato per non bloccare l'UI
+    
+    # Avvia script
     thread = threading.Thread(target=script.main, daemon=True)
     thread.start()
-
-    del_btn(app)
+    
+    # Frame pulsante
+    button_frame = ttk.Frame(app)
+    button_frame.grid(row=1, column=0, sticky="e", padx=10, pady=10)
+    
+    # Pulsante
+    del_btn_instance = ttk.Button(
+        master=button_frame,
+        text="Delete VM",
+        command=lambda: delete_vm_and_disable_button(del_btn_instance),
+        bootstyle=DANGER,
+        width=6,
+    )
+    del_btn_instance.pack(side=RIGHT)
+    if delete.state:
+        del_btn_instance.config(state="disabled")
+    
     app.mainloop()
